@@ -104,7 +104,7 @@ namespace Api.Controllers
                 string _nick = (string)data[1];
                 string _avatar = (string)data[2];
                 string _class = (string)data[3];
-                heroes.Add(new Hero((int)_id, _nick, _avatar, _class));
+                heroes.Add(new Hero { Id = (int)_id, Nick = _nick, Img = _avatar, Prof = _class });
             }
             order_id();
             connection.Close();

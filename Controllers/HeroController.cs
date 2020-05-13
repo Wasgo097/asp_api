@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 using Api.Models;
+using Microsoft.AspNetCore.Cors;
+
 namespace Api.Controllers
 {
     [Route("api/[controller]")]
@@ -36,6 +38,7 @@ namespace Api.Controllers
         }
         // GET api/values
         [HttpGet]
+        [EnableCors("developerska")]
         //public ActionResult<string> Get()
         public ActionResult<IEnumerable<Hero>> Get()
         {
@@ -43,6 +46,7 @@ namespace Api.Controllers
         }
         // GET api/values/5
         [HttpGet("{id}")]
+        [EnableCors("developerska")]
         public ActionResult<Hero> Get(int id)
         {
             //return heroes.Single(h => h.Id == id);
@@ -53,6 +57,7 @@ namespace Api.Controllers
         }
         // POST api/values
         [HttpPost]
+        [EnableCors("developerska")]
         public void Post([FromBody] Hero value)
         {
             //int next_id = heroes.Max(h => h.Id) + 1;
@@ -63,6 +68,7 @@ namespace Api.Controllers
         }
         // PUT api/values/5
         [HttpPut("{id}")]
+        [EnableCors("developerska")]
         public void Put(int id, [FromBody] Hero value)
         {
             //int index = heroes.FindIndex(h => h.Id == id);
@@ -78,6 +84,7 @@ namespace Api.Controllers
         }
         // DELETE api/values/5
         [HttpDelete("{id}")]
+        [EnableCors("developerska")]
         public void Delete(int id)
         {
             //heroes.Remove(heroes.Single(h => h.Id == id));

@@ -12,17 +12,17 @@ namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HeroController : ControllerBase
+    public class HeroesController : ControllerBase
     {
         SqliteConnection connection;
         List<Hero> heroes;
-        public HeroController()
+        public HeroesController()
         {
             connection = new SqliteConnection("Data Source=mydb.db");
             heroes = new List<Hero>();
             fill_list();
         }
-        ~HeroController()
+        ~HeroesController()
         {
             string cmd_reset = "delete from heroes;";
             SqliteCommand sql_cmd = new SqliteCommand(cmd_reset, connection);

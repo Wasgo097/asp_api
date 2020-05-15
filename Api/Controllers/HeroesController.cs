@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 using Api.Models;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.OpenApi.Models;
 namespace Api.Controllers
 {
     [Route("api/[controller]")]

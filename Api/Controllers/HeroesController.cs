@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 using Api.Models;
 using Microsoft.AspNetCore.Cors;
-
+using Microsoft.OpenApi.Models;
 namespace Api.Controllers
 {
     [Route("api/[controller]")]
@@ -24,17 +24,7 @@ namespace Api.Controllers
         }
         ~HeroesController()
         {
-            string cmd_reset = "delete from heroes;";
-            SqliteCommand sql_cmd = new SqliteCommand(cmd_reset, connection);
-            connection.Open();
-            sql_cmd.ExecuteNonQuery();
-            foreach(var her in heroes)
-            {
-                string cmd_ins="insert into heroes(id,nick,avatar,class) values("+her.Id.ToString()+",'"+her.Nick+"','"+her.Img+"','"+her.Prof+"');";
-                SqliteCommand sql_cmd_in = new SqliteCommand(cmd_ins, connection);
-                sql_cmd_in.ExecuteNonQuery();
-            }
-            connection.Close();
+           
         }
         // GET api/values
         [HttpGet]
@@ -58,18 +48,20 @@ namespace Api.Controllers
         // POST api/values
         [HttpPost]
         [EnableCors("developerska")]
-        public void Post([FromBody] Hero value)
+        public bool Post([FromBody] Hero value)
         {
             //int next_id = heroes.Max(h => h.Id) + 1;
             //value.Id = next_id;
             //heroes.Add(value);
             heroes.Add(value);
             order_id();
+            insert_Hero(heroes.Last());
+            return true;
         }
         // PUT api/values/5
         [HttpPut("{id}")]
         [EnableCors("developerska")]
-        public void Put(int id, [FromBody] Hero value)
+        public bool Put(int id, [FromBody] Hero value)
         {
             //int index = heroes.FindIndex(h => h.Id == id);
             //heroes[index] = value;
@@ -79,13 +71,16 @@ namespace Api.Controllers
             {
                 heroes[idx] = value;
                 heroes[idx].Id = id;
+                save_all_changes();
+                return true;
             }
             else NotFound();
+            return false;
         }
         // DELETE api/values/5
         [HttpDelete("{id}")]
         [EnableCors("developerska")]
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             //heroes.Remove(heroes.Single(h => h.Id == id));
             //order_id();
@@ -93,10 +88,14 @@ namespace Api.Controllers
             if (idx >= 0)
             {
                 heroes.RemoveAt(idx);
+                delete_Hero(id);
                 order_id();
+                save_all_changes();
+                return true;
             }
             else
                 NotFound();
+            return false;
         }
         void fill_list()
         {
@@ -129,6 +128,36 @@ namespace Api.Controllers
                     return i;
             }
             return -1;
+        }
+        void save_all_changes()
+        {
+            string cmd_reset = "delete from heroes;";
+            SqliteCommand sql_cmd = new SqliteCommand(cmd_reset, connection);
+            connection.Open();
+            sql_cmd.ExecuteNonQuery();
+            foreach (var her in heroes)
+            {
+                string cmd_ins = "insert into heroes(id,nick,avatar,class) values(" + her.Id.ToString() + ",'" + her.Nick + "','" + her.Img + "','" + her.Prof + "');";
+                SqliteCommand sql_cmd_in = new SqliteCommand(cmd_ins, connection);
+                sql_cmd_in.ExecuteNonQuery();
+            }
+            connection.Close();
+        }
+        void insert_Hero(Hero her)
+        {
+            connection.Open();
+            string cmd_ins = "insert into heroes(id,nick,avatar,class) values(" + her.Id.ToString() + ",'" + her.Nick + "','" + her.Img + "','" + her.Prof + "');";
+            SqliteCommand sql_cmd_in = new SqliteCommand(cmd_ins, connection);
+            sql_cmd_in.ExecuteNonQuery();
+            connection.Close();
+        }
+        void delete_Hero(int id)
+        {
+            connection.Open();
+            string cmd_del = "delete from heroes where id=" + id + ";";
+            SqliteCommand sql_cmd_del = new SqliteCommand(cmd_del, connection);
+            sql_cmd_del.ExecuteNonQuery();
+            connection.Close();
         }
     }
 }

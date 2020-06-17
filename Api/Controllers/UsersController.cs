@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 using Api.Models;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api.Controllers
 {
@@ -20,15 +21,28 @@ namespace Api.Controllers
         {
             connection = new SqliteConnection("Data Source=mydb.db");
             users = new List<User>();
+            fill_list();
         }
-        //[HttpGet("{login},{password}")]
-        //[EnableCors("developerska")]
-        //public bool Get(string login,string password)
-        //{
-        //    var user = users.Where(x => x.Login == login && x.Password == password);
-        //    if (user.ToList().Count == 1) return true;
-        //    else return false;
-        //}
+        // GET api/values
+        [HttpGet,Authorize]
+        [EnableCors("developerska")]
+        //public ActionResult<string> Get()
+        public ActionResult<IEnumerable<User>> Get()
+        {
+            return users;
+        }
+        // GET api/values/5
+        [HttpGet("{id}"), Authorize]
+        [EnableCors("developerska")]
+        public ActionResult<User> Get(int id)
+        {
+            //return heroes.Single(h => h.Id == id);
+            //int idx = id_valid(id);
+            //if (idx > -1)
+            //    return heroes[idx];
+            //else return NotFound();
+            return users[id];
+        }
         void fill_list()
         {
             users.Clear();
@@ -52,15 +66,6 @@ namespace Api.Controllers
             for (int i = 0; i < users.Count; i++)
                 users[i].Id = i;
         }
-        //int id_valid(int id)
-        //{
-        //    for (int i = 0; i < users.Count; i++)
-        //    {
-        //        if (users[i].Id == id)
-        //            return i;
-        //    }
-        //    return -1;
-        //}
         void save_all_changes()
         {
             string cmd_reset = "delete from users;";

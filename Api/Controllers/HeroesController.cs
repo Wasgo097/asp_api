@@ -21,10 +21,6 @@ namespace Api.Controllers
             heroes = new List<Hero>();
             fill_list();
         }
-        ~HeroesController()
-        {
-           
-        }
         // GET api/values
         [HttpGet]
         [EnableCors("developerska")]

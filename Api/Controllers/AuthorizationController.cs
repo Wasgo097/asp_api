@@ -43,15 +43,20 @@ namespace Api.Controllers
                     var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(user.Login+"ptakilatajakluczemsha256"+user.Password));
                     //var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
                     var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, uss.Login),
+                        new Claim(ClaimTypes.Role, uss.Type)
+                    };
                     var tokeOptions = new JwtSecurityToken(
                         issuer: "http://localhost:44365",
                         audience: "http://localhost:44365",
-                        claims: new List<Claim>(),
+                        claims: claims,
                         expires: DateTime.Now.AddMinutes(5),
                         signingCredentials: signinCredentials
                     );
                     var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-                    return Ok(new { Token = tokenString/*,Type=uss.Type*/});
+                    return Ok(new { Token = tokenString, Role = uss.Type });
                 }
                 else
                 {

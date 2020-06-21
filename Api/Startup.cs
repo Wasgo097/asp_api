@@ -53,9 +53,8 @@ namespace Api
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-
-                    ValidIssuer = "http://localhost:5000",
-                    ValidAudience = "http://localhost:5000",
+                    ValidIssuer = "http://localhost:44365",
+                    ValidAudience = "http://localhost:44365",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
                 };
             });

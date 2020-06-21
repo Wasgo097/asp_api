@@ -27,8 +27,7 @@ namespace Api.Controllers
             users = new List<User>();
             fill_list();
         }
-        // GET api/values
-        [HttpPost/*, Route("login")*/]
+        [HttpPost]
         public IActionResult Login([FromBody]UserLogin user)
         {
             if (user == null)
@@ -44,8 +43,8 @@ namespace Api.Controllers
                     //var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
                     var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
                     var tokeOptions = new JwtSecurityToken(
-                        issuer: "http://localhost:5000",
-                        audience: "http://localhost:5000",
+                        issuer: "http://localhost:44365",
+                        audience: "http://localhost:44365",
                         claims: new List<Claim>(),
                         expires: DateTime.Now.AddMinutes(5),
                         signingCredentials: signinCredentials
@@ -59,26 +58,26 @@ namespace Api.Controllers
                 }
             }
         }
-        //// GET api/values
-        //[HttpGet, Authorize]
-        //[EnableCors("developerska")]
-        ////public ActionResult<string> Get()
-        //public ActionResult<IEnumerable<User>> Get()
-        //{
-        //    return users;
-        //}
-        //// GET api/values/5
-        //[HttpGet("{id}"), Authorize]
-        //[EnableCors("developerska")]
-        //public ActionResult<User> Get(int id)
-        //{
-        //    //return heroes.Single(h => h.Id == id);
-        //    //int idx = id_valid(id);
-        //    //if (idx > -1)
-        //    //    return heroes[idx];
-        //    //else return NotFound();
-        //    return users[id];
-        //}
+        // GET api/values
+        [HttpGet/*, Authorize*/]
+        [EnableCors("developerska")]
+        //public ActionResult<string> Get()
+        public ActionResult<IEnumerable<User>> Get()
+        {
+            return users;
+        }
+        // GET api/values/5
+        [HttpGet("{id}"), Authorize]
+        [EnableCors("developerska")]
+        public ActionResult<User> Get(int id)
+        {
+            //return heroes.Single(h => h.Id == id);
+            //int idx = id_valid(id);
+            //if (idx > -1)
+            //    return heroes[idx];
+            //else return NotFound();
+            return users[id];
+        }
         void fill_list()
         {
             users.Clear();

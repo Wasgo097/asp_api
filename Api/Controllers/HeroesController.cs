@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 using Api.Models;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
+
 namespace Api.Controllers
 {
     [Route("api/[controller]")]
@@ -22,7 +24,7 @@ namespace Api.Controllers
             fill_list();
         }
         // GET api/values
-        [HttpGet]
+        [HttpGet, Authorize]
         [EnableCors("developerska")]
         //public ActionResult<string> Get()
         public ActionResult<IEnumerable<Hero>> Get()
@@ -30,7 +32,7 @@ namespace Api.Controllers
             return heroes;
         }
         // GET api/values/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         [EnableCors("developerska")]
         public ActionResult<Hero> Get(int id)
         {
@@ -41,7 +43,7 @@ namespace Api.Controllers
             else return NotFound();
         }
         // POST api/values
-        [HttpPost]
+        [HttpPost, Authorize]
         [EnableCors("developerska")]
         public bool Post([FromBody] Hero value)
         {
@@ -54,7 +56,7 @@ namespace Api.Controllers
             return true;
         }
         // PUT api/values/5
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize]
         [EnableCors("developerska")]
         public bool Put(int id, [FromBody] Hero value)
         {
@@ -73,7 +75,7 @@ namespace Api.Controllers
             return false;
         }
         // DELETE api/values/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize]
         [EnableCors("developerska")]
         public bool Delete(int id)
         {

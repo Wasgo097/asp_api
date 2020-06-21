@@ -24,7 +24,7 @@ namespace Api.Controllers
             fill_list();
         }
         // GET api/values
-        [HttpGet, Authorize]
+        [HttpGet, Authorize/*(Roles ="casual"),Authorize(Roles ="admin")*/]
         [EnableCors("developerska")]
         //public ActionResult<string> Get()
         public ActionResult<IEnumerable<Hero>> Get()
@@ -32,7 +32,7 @@ namespace Api.Controllers
             return heroes;
         }
         // GET api/values/5
-        [HttpGet("{id}"), Authorize]
+        [HttpGet("{id}"), Authorize/*(Roles = "casual"), Authorize(Roles = "admin")*/]
         [EnableCors("developerska")]
         public ActionResult<Hero> Get(int id)
         {
@@ -43,7 +43,7 @@ namespace Api.Controllers
             else return NotFound();
         }
         // POST api/values
-        [HttpPost, Authorize]
+        [HttpPost, Authorize(Roles = "admin")]
         [EnableCors("developerska")]
         public bool Post([FromBody] Hero value)
         {
@@ -56,7 +56,7 @@ namespace Api.Controllers
             return true;
         }
         // PUT api/values/5
-        [HttpPut("{id}"), Authorize]
+        [HttpPut("{id}"), Authorize(Roles = "admin")]
         [EnableCors("developerska")]
         public bool Put(int id, [FromBody] Hero value)
         {
@@ -75,7 +75,7 @@ namespace Api.Controllers
             return false;
         }
         // DELETE api/values/5
-        [HttpDelete("{id}"), Authorize]
+        [HttpDelete("{id}"), Authorize(Roles = "admin")]
         [EnableCors("developerska")]
         public bool Delete(int id)
         {

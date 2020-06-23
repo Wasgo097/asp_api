@@ -12,3 +12,5 @@ C:\semestr 6\tiu\lab1\api\Api\obj\Debug\netcoreapp2.1\Api.AssemblyInfo.cs
 C:\semestr 6\tiu\lab1\api\Api\obj\Debug\netcoreapp2.1\Api.RazorTargetAssemblyInfo.cache
 C:\semestr 6\tiu\lab1\api\Api\obj\Debug\netcoreapp2.1\Api.dll
 C:\semestr 6\tiu\lab1\api\Api\obj\Debug\netcoreapp2.1\Api.pdb
+C:\semestr 6\tiu\lab1\api\Api\bin\Debug\netcoreapp2.1\Api.xml
+C:\semestr 6\tiu\lab1\api\Api\obj\Debug\netcoreapp2.1\Api.xml

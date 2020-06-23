@@ -75,6 +75,10 @@ namespace Api.Controllers
             return false;
         }
         // DELETE api/values/5
+        /// <summary>
+        /// Deletes a specific TodoItem.
+        /// </summary>
+        /// <param name="id"></param>
         [HttpDelete("{id}"), Authorize(Roles = "admin")]
         [EnableCors("developerska")]
         public bool Delete(int id)

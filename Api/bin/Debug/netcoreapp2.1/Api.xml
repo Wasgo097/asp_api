@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Api</name>
+    </assembly>
+    <members>
+        <member name="M:Api.Controllers.AuthorizationController.Login(Api.Models.UserLogin)">
+            <remarks>
+            Sample request:
+                POST /User
+                {
+                   "Login":"abc",
+                   "Password":"cba"
+                }
+            </remarks>
+            <summary>
+            The only method that allows login
+            </summary>
+            <param name="user"></param>
+            <response code="200">User is login. Returns Token and Role</response>
+            <response code="401">User isn't login</response>
+        </member>
+        <member name="M:Api.Controllers.HeroesController.Get">
+            <summary>
+            Returns all heroes
+            </summary>
+            <response code="200">Returns all heroes from base</response>
+            <response code="401">User isn't login</response>
+        </member>
+        <member name="M:Api.Controllers.HeroesController.Get(System.Int32)">
+            <summary>
+            Returns hero from id position
+            </summary>
+            <param name="id"></param>
+            <response code="200">Returns specific hero from base</response>
+            <response code="401">User isn't login</response>
+            <response code="404">Id is invalid</response>
+        </member>
+        <member name="M:Api.Controllers.HeroesController.Post(Api.Models.Hero)">
+            <remarks>
+            Sample request:
+                POST /Hero
+                {
+                    Id:0,
+                   "Nick":"abc",
+                   "Img":"cba",
+                   "Prof":"xyz"
+                }
+            </remarks>
+            <summary>
+            Adds a specific hero on last position in base
+            </summary>
+            <param name="value"></param>
+            <response code="200">Returns true after added hero to base</response>
+            <response code="401">User isn't login</response>
+            <response code="404">Id is invalid</response>
+        </member>
+        <member name="M:Api.Controllers.HeroesController.Put(System.Int32,Api.Models.Hero)">
+            <remarks>
+            Sample request:
+                PUT /Hero
+                {   
+                    "Id": 0,
+                    "Nick": "string",
+                    "Img": "string",
+                    "Prof": "string"
+                }
+            </remarks>
+            <summary>
+            Changes a specific hero.
+            </summary>
+            <param name="id"></param>
+            <param name="value"></param>
+            <response code="200">Returns true after founded and changed hero, when id is invalid returns false</response>
+            <response code="401">User isn't login</response>
+            <response code="404">Id is invalid</response>
+        </member>
+        <member name="M:Api.Controllers.HeroesController.Delete(System.Int32)">
+            <summary>
+            Deletes a specific hero.
+            </summary>
+            <param name="hero idid"></param>
+            <response code="200">Returns all heroes in base</response>
+            <response code="401">User isn't login</response>
+            <response code="404">Id is invalid</response>
+        </member>
+    </members>
+</doc>

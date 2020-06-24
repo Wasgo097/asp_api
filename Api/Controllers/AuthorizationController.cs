@@ -27,8 +27,24 @@ namespace Api.Controllers
             users = new List<User>();
             fill_list();
         }
+        /// <remarks>
+        /// Sample request:
+        ///     POST /User
+        ///     {
+        ///        "Login":"abc",
+        ///        "Password":"cba"
+        ///     }
+        /// </remarks>
+        /// <summary>
+        /// The only method that allows login
+        /// </summary>
+        /// <param name="user"></param>
+        /// <response code="200">User is login. Returns Token and Role</response>
+        /// <response code="401">User isn't login</response>
         [HttpPost]
         [EnableCors("developerska")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IActionResult Login([FromBody]UserLogin user)
         {
             if (user == null)
@@ -64,26 +80,6 @@ namespace Api.Controllers
                 }
             }
         }
-        //// GET api/values
-        //[HttpGet/*, Authorize*/]
-        //[EnableCors("developerska")]
-        ////public ActionResult<string> Get()
-        //public ActionResult<IEnumerable<User>> Get()
-        //{
-        //    return users;
-        //}
-        //// GET api/values/5
-        //[HttpGet("{id}"), Authorize]
-        //[EnableCors("developerska")]
-        //public ActionResult<User> Get(int id)
-        //{
-        //    //return heroes.Single(h => h.Id == id);
-        //    //int idx = id_valid(id);
-        //    //if (idx > -1)
-        //    //    return heroes[idx];
-        //    //else return NotFound();
-        //    return users[id];
-        //}
         void fill_list()
         {
             users.Clear();

@@ -8,7 +8,6 @@ using Microsoft.Data.Sqlite;
 using Api.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Authorization;
-
 namespace Api.Controllers
 {
     [Route("api/[controller]")]
@@ -23,17 +22,38 @@ namespace Api.Controllers
             heroes = new List<Hero>();
             fill_list();
         }
-        // GET api/values
+        /// <summary>
+        /// Returns all heroes
+        /// </summary>
+        /// <response code="200">Returns all heroes from base</response>
+        /// <response code="401">User isn't login</response>
         [HttpGet, Authorize/*(Roles ="casual"),Authorize(Roles ="admin")*/]
         [EnableCors("developerska")]
-        //public ActionResult<string> Get()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult<IEnumerable<Hero>> Get()
         {
             return heroes;
         }
-        // GET api/values/5
+        ///// <remarks>
+        ///// Sample request:
+        /////     GET
+        /////     {
+        /////        id:1
+        /////     }
+        ///// </remarks>
+        /// <summary>
+        /// Returns hero from id position
+        /// </summary>
+        /// <param name="id"></param>
+        /// <response code="200">Returns specific hero from base</response>
+        /// <response code="401">User isn't login</response>
+        /// <response code="404">Id is invalid</response>
         [HttpGet("{id}"), Authorize/*(Roles = "casual"), Authorize(Roles = "admin")*/]
         [EnableCors("developerska")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Hero> Get(int id)
         {
             //return heroes.Single(h => h.Id == id);
@@ -42,27 +62,59 @@ namespace Api.Controllers
                 return heroes[idx];
             else return NotFound();
         }
-        // POST api/values
+        /// <remarks>
+        /// Sample request:
+        ///     POST /Hero
+        ///     {
+        ///         Id:0,
+        ///        "Nick":"abc",
+        ///        "Img":"cba",
+        ///        "Prof":"xyz"
+        ///     }
+        /// </remarks>
+        /// <summary>
+        /// Adds a specific hero on last position in base
+        /// </summary>
+        /// <param name="value"></param>
+        /// <response code="200">Returns true after added hero to base</response>
+        /// <response code="401">User isn't login</response>
+        /// <response code="404">Id is invalid</response>
         [HttpPost, Authorize(Roles = "admin")]
         [EnableCors("developerska")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public bool Post([FromBody] Hero value)
         {
-            //int next_id = heroes.Max(h => h.Id) + 1;
-            //value.Id = next_id;
-            //heroes.Add(value);
             heroes.Add(value);
             order_id();
             insert_Hero(heroes.Last());
             return true;
         }
-        // PUT api/values/5
+        /// <remarks>
+        /// Sample request:
+        ///     PUT /Hero
+        ///     {   
+        ///         "Id": 0,
+        ///         "Nick": "string",
+        ///         "Img": "string",
+        ///         "Prof": "string"
+        ///     }
+        /// </remarks>
+        /// <summary>
+        /// Changes a specific hero.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        /// <response code="200">Returns true after founded and changed hero, when id is invalid returns false</response>
+        /// <response code="401">User isn't login</response>
+        /// <response code="404">Id is invalid</response>
         [HttpPut("{id}"), Authorize(Roles = "admin")]
         [EnableCors("developerska")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public bool Put(int id, [FromBody] Hero value)
         {
-            //int index = heroes.FindIndex(h => h.Id == id);
-            //heroes[index] = value;
-            //heroes[index].Id = id;
             int idx = id_valid(id);
             if (idx >= 0)
             {
@@ -74,13 +126,18 @@ namespace Api.Controllers
             else NotFound();
             return false;
         }
-        // DELETE api/values/5
         /// <summary>
-        /// Deletes a specific TodoItem.
+        /// Deletes a specific hero.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="hero id"></param>
+        /// <response code="200">Returns all heroes in base</response>
+        /// <response code="401">User isn't login</response>
+        /// <response code="404">Id is invalid</response>
         [HttpDelete("{id}"), Authorize(Roles = "admin")]
         [EnableCors("developerska")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public bool Delete(int id)
         {
             //heroes.Remove(heroes.Single(h => h.Id == id));

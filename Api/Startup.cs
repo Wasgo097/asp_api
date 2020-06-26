@@ -63,12 +63,25 @@ namespace Api
                         Url = new Uri("https://example.com/license"),
                     }
                 });
-                c.AddSecurityDefinition("oauth2", securityScheme: new ApiKeyScheme
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
-                    In = "header",
+                    In = ParameterLocation.Header,
+                    Description = "Insert: Bearer [APIKey]",
                     Name = "Authorization",
-                    Type = "apiKey"
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                      Reference = new OpenApiReference
+                      {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                      }
+                     },
+                     new string[] { }
+                    }
                 });
                 c.OperationFilter<SecurityRequirementsOperationFilter>();
                 // Set the comments path for the Swagger JSON and UI.
@@ -79,7 +92,8 @@ namespace Api
             services.AddAuthentication(opt => {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
+                opt.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -92,7 +106,6 @@ namespace Api
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
                 };
             });
-            //services.AddControllers();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -106,7 +119,6 @@ namespace Api
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
-            app.UseMvc();
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
@@ -117,6 +129,7 @@ namespace Api
                 //c.RoutePrefix = string.Empty;
             });
             app.UseAuthentication();
+            app.UseMvc();
             app.UseCors("developerska");
         }
     }

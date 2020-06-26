@@ -56,8 +56,8 @@ namespace Api.Controllers
                 if (users.Any(x => x.Login == user.Login && x.Password == user.Password))
                 {
                     var uss = users.Where(x => x.Login == user.Login && x.Password == user.Password).Single();
-                    var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(user.Login+"ptakilatajakluczemsha256"+user.Password));
-                    //var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
+                    //var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(user.Login+"ptakilatajakluczemsha256"+user.Password));
+                    var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
                     var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
                     var claims = new List<Claim>
                     {

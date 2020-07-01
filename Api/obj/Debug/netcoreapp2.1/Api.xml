@@ -20,7 +20,7 @@
             <response code="200">User is login. Returns Token and Role</response>
             <response code="401">User isn't login</response>
         </member>
-        <member name="M:Api.Controllers.HeroesController.Get">
+        <member name="M:Api.Controllers.HeroesController.Get(System.String,System.String)">
             <summary>
             Returns all heroes
             </summary>

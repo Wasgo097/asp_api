@@ -31,9 +31,32 @@ namespace Api.Controllers
         [EnableCors("developerska")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult<IEnumerable<Hero>> Get()
+        public ActionResult<IEnumerable<Hero>> Get([FromQuery]string sort,[FromQuery]string filtr)
         {
-            return heroes;
+            List<Hero> temp_list = heroes.Select(x => new Hero { Id = x.Id, Img = x.Img, Prof = x.Prof, Nick = x.Nick }).ToList();
+            if (!String.IsNullOrEmpty(sort))
+            {
+                switch (sort)
+                {
+                    case "profasc":
+                        temp_list= temp_list.OrderBy(x => x.Prof).ToList();
+                        break;
+                    case "profdecs":
+                        temp_list=temp_list.OrderByDescending(x => x.Prof).ToList();
+                        break;
+                    case "nickasc":
+                        temp_list=temp_list.OrderBy(x => x.Nick).ToList();
+                        break;
+                    case "nickdesc":
+                        temp_list=temp_list.OrderByDescending(x => x.Nick).ToList();
+                        break;
+                }
+            }
+            if (!String.IsNullOrEmpty(filtr))
+            {
+                temp_list = temp_list.Where(x => x.Prof == filtr).ToList();
+            }
+            return temp_list;
         }
         ///// <remarks>
         ///// Sample request:
